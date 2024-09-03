@@ -1,12 +1,14 @@
 - name: Deploy Flask Application
-  hosts: web
+  hosts: localhost
   become: yes
   tasks:
-    - name: Remove conflicting packages
+    - name: Ensure necessary packages are installed
       apt:
-        name: containerd
-        state: absent
-      ignore_errors: yes  # Ignore if not installed
+        name: "{{ item }}"
+        state: present
+     with_items:
+       - python3-pip
+       - docker
 
     - name: Update package list
       apt:
