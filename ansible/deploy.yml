@@ -6,9 +6,9 @@
       apt:
         name: "{{ item }}"
         state: present
-     with_items:
-       - python3-pip
-       - docker
+      with_items:
+        - python3-pip
+        - docker
 
     - name: Update package list
       apt:
