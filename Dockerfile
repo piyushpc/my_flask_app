@@ -13,6 +13,9 @@ RUN pip install -r requirements.txt
 # Copy the rest of the application code
 COPY . /app
 
+# Check installed package versions (for debugging)
+RUN pip show flask werkzeug
+
 # Command to run the application
 CMD ["python", "app.py"]
 
