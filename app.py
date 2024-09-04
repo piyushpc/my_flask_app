@@ -26,6 +26,10 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
+@app.route('/add_entry')
+def add_entry_form():
+    return render_template('add_entry.html')
+
 @app.route('/')
 def index():
     return "Hello, World!"
