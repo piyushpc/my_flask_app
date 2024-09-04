@@ -16,11 +16,11 @@
       apt:
         name: "{{ item }}"
         state: present
-      with_items:
+      loop:
         - python3-pip
         - docker-ce
 
-    - name: Install Docker if not installed
+    - name: Check if Docker is installed
       command: docker --version
       register: docker_installed
       ignore_errors: yes
@@ -32,7 +32,16 @@
       when: docker_installed is failed
 
     - name: Build Docker Image
-      command: docker build -t my_app /home/piyushpc/my_flask_app/venv
+      docker_image:
+        path: /home/piyushpc/my_flask_app  # Path to the directory containing the Dockerfile
+        name: my_app
+        tag: latest
 
     - name: Run Docker Container
-      command: docker run -d -p 5000:5000 my_app
+      docker_container:
+        name: my_flask_container
+        image: my_app:latest
+        state: started
+        ports:
+          - "5000:5000"  # Map host port to container port
+
