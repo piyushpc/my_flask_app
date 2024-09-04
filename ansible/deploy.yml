@@ -36,4 +36,3 @@
 
     - name: Run Docker Container
       command: docker run -d -p 5000:5000 my_app
-

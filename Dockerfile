@@ -1,3 +1,4 @@
+
 # Use a base image
 FROM python:3.8-slim-buster
 
@@ -18,4 +19,3 @@ RUN pip show flask werkzeug
 
 # Command to run the application
 CMD ["python", "app.py"]
-
