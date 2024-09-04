@@ -31,11 +31,20 @@
         state: present
       when: docker_installed is failed
 
+    - name: Check if Dockerfile exists
+      stat:
+        path: /home/piyushpc/my_flask_app/Dockerfile
+      register: dockerfile_check
+
     - name: Build Docker Image
-      docker_image:
+      community.docker.docker_image:
         path: /home/piyushpc/my_flask_app  # Path to the directory containing the Dockerfile
         name: my_app
         tag: latest
+        state: present
+        build:
+          context: /home/piyushpc/my_flask_app  # Add the context if necessary 
+          dockerfile: Dockerfile  # Specify the Dockerfile if it is named differently
 
     - name: Run Docker Container
       docker_container:
