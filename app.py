@@ -1,4 +1,3 @@
-# app.py
 from flask import Flask, request, g, render_template
 import sqlite3
 
@@ -26,10 +25,6 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
-@app.route('/add_entry')
-def add_entry_form():
-    return render_template('add_entry.html')
-
 @app.route('/')
 def index():
     return "Hello, World!"
@@ -38,7 +33,7 @@ def index():
 def add_entry():
     name = request.form['name']
     db = get_db()
-    db.execute('INSERT INTO entries (name) VALUES (?)', [name])
+    db.execute('INSERT INTO entries (name) VALUES (?)', (name,))
     db.commit()
     return "Entry added!"
 
@@ -50,5 +45,5 @@ def show_entries():
     return render_template('entries.html', entries=entries)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 

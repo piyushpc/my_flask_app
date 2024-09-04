@@ -1,0 +1,18 @@
+<!-- templates/entries.html -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Entries</title>
+</head>
+<body>
+    <h1>Entries</h1>
+    <ul>
+        {% for entry in entries %}
+            <li>{{ entry[0] }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/">Go to Home</a>
+</body>
+</html>
+
