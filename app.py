@@ -27,13 +27,13 @@ def close_connection(exception):
 
 @app.route('/')
 def index():
-    return "Hello, World!"
+    return render_template('index.html')
 
 @app.route('/add', methods=['POST'])
 def add_entry():
     name = request.form['name']
     db = get_db()
-    db.execute('INSERT INTO entries (name) VALUES (?)', (name,))
+    db.execute('INSERT INTO entries (name) VALUES (?)', [name])
     db.commit()
     return "Entry added!"
 
@@ -45,5 +45,4 @@ def show_entries():
     return render_template('entries.html', entries=entries)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
-
+    app.run(host='0.0.0.0', port=5000)
