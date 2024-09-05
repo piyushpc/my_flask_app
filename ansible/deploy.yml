@@ -1,12 +1,40 @@
 - name: Deploy Flask Application
   hosts: localhost
+  become: yes
   tasks:
-    - name: Gather Facts
-      setup:
-
     - name: Update package list
       apt:
         update_cache: yes
+
+    - name: Remove conflicting containerd if exists
+      apt:
+        name: containerd
+        state: absent
+      ignore_errors: yes  # Ignore errors if containerd is not installed
+
+    - name: Ensure necessary packages are installed
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - python3-pip
+        - docker-ce
+
+    - name: Check if Docker is installed
+      command: docker --version
+      register: docker_installed
+      ignore_errors: yes
+
+    - name: Install Docker if it's not installed
+      apt:
+        name: docker.io
+        state: present
+      when: docker_installed is failed
+
+    - name: Check if Dockerfile exists
+      stat:
+        path: /home/piyushpc/my_flask_app/Dockerfile
+      register: dockerfile_check
 
     - name: Build Docker Image
       community.docker.docker_image:
@@ -14,13 +42,14 @@
         tag: "latest"
         source: build
         build:
-          path: "/var/lib/jenkins/workspace/Deploy Flask App"
+          path: "/home/piyushpc/my_flask_app"
           dockerfile: "Dockerfile"
 
     - name: Run Docker Container
-      community.docker.docker_container:
-        name: my_app_container
+      docker_container:
+        name: my_flask_container
         image: my_app:latest
         state: started
-        restart_policy: always
+        ports:
+          - "5000:5000"  # Map host port to container port
 
