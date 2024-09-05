@@ -37,15 +37,15 @@
       register: dockerfile_check
 
     - name: Build Docker Image
-      community.docker.docker_image:
-        path: /home/piyushpc/my_flask_app  # Path to the directory containing the Dockerfile
-        name: my_app
-        tag: latest
-        state: present
-        build:
-          context: /home/piyushpc/my_flask_app  # Add the context if necessary 
-          dockerfile: Dockerfile  # Specify the Dockerfile if it is named differently
+  community.docker.docker_image:
+    name: "my_app"
+    tag: "latest"
+    source: build
+    build:
+      path: "/var/lib/jenkins/workspace/Deploy Flask App"
+      dockerfile: "Dockerfile"
 
+ 
     - name: Run Docker Container
       docker_container:
         name: my_flask_container
@@ -53,4 +53,6 @@
         state: started
         ports:
           - "5000:5000"  # Map host port to container port
+
+/var/lib/jenkins/workspace/Deploy Flask Ap
 
