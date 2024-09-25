@@ -51,5 +51,5 @@
         image: my_app:latest
         state: started
         ports:
-          - "5001:5000"  # Map host port to container port
+          - "5000:5000"  # Map host port to container port
 

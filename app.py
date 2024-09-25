@@ -1,5 +1,6 @@
 from flask import Flask, request, g, render_template
 import sqlite3
+#assert response.data == b'Hello, Devops!'
 
 app = Flask(__name__)
 
@@ -43,6 +44,10 @@ def show_entries():
     cur = db.execute('SELECT name FROM entries')
     entries = cur.fetchall()
     return render_template('entries.html', entries=entries)
+
+@app.route('/')
+def hello():
+    return ('Hello, devops!')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
